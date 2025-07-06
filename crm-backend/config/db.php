@@ -8,7 +8,6 @@ try {
         $env['DB_PASS']
     );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo json_encode('connected to db');
 
 } catch (PDOException $e) {
     http_response_code(500);
