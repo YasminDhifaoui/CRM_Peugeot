@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { loginUser } from "../services/authService";
+import { loginUser } from "../../services/auth-services/authService"; 
 import { Input, Button, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 

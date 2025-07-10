@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../services/authService"; // your logout function
+import { logoutUser } from "../../services/auth-services/authService"; 
 
 export function Logout() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export function Logout() {
       } catch (err) {
         // Optionally handle logout errors here
       }
-      navigate("/auth/sign-in"); // Redirect to sign-in after logout
+      navigate("/login", { replace: true });
     }
     doLogout();
   }, [navigate]);

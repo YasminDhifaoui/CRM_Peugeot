@@ -6,20 +6,44 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-
-import Logout from "./pages/logout";
-import Login from "./pages/login";
+import Login from "./pages/auth-pages/login";
+import Logout from "./pages/auth-pages/logout";
 import ManagerDashboard from "./pages/manager-pages/managerDashboard";
-
+import ProtectedRoute from "./api/ProtectedRoute";
+import { UserList } from "./pages/manager-pages/usersManagement/usersList";
+import { AddUser } from "./pages/manager-pages/usersManagement/addUser";
+import {DossiersList} from "./pages/manager-pages/dossiersManagement/listDossier";
+import TestSession from "./pages/TestSession";
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/managerDashboard" element={<ManagerDashboard />} />
-        <Route path="/logout" element={<Logout />} />
+        {/* Redirect default path "/" to "/login" */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Auth routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/managerDashboard/logout" element={<Logout />} />
+        <Route
+          path="/managerDashboard/test-session"
+          element={<TestSession />}
+        />
+
+        {/* Manager routes */}
+        <Route
+          path="/managerDashboard"
+          element={
+            <ProtectedRoute>
+              {" "}
+              {/*it means the user cant return to previous page after logout*/}
+              <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/managerDashboard/usersList" element={<UserList />} />
+        <Route path="/managerDashboard/addUser" element={<AddUser />} />
+        <Route path="/managerDashboard/dossiersList" element={<DossiersList />} />
+
       </Routes>
     </Router>
   );

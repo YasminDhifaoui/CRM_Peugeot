@@ -1,13 +1,50 @@
-// src/layout/manager/sidebar.jsx
+// src/layout/manager/Sidebar.jsx
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
+import { Typography, Button, IconButton } from "@material-tailwind/react";
 import {
-  Typography,
-  Button,
-  IconButton,
-} from "@material-tailwind/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+  XMarkIcon,
+  HomeIcon,
+  UserIcon,
+  ArrowRightOnRectangleIcon,
+  EnvelopeIcon,
+} from "@heroicons/react/24/outline";
+
+// Sidebar routes data combined here
+const SidebarRoutes = [
+  {
+    title: "Manager",
+    layout: "/managerDashboard",
+    pages: [
+      {
+        name: "dashboard",
+        path: "/",
+        icon: <HomeIcon className="h-5 w-5" />,
+      },
+      {
+        name: "users",
+        path: "/usersList",
+        icon: <UserIcon className="h-5 w-5" />,
+      },
+      {
+        name: "session test",
+        path: "/test-session",
+        icon: <UserIcon className="h-5 w-5" />,
+      },
+      {
+        name: "Dossiers commerciales",
+        path: "/dossiersList",
+        icon: <EnvelopeIcon className="h-5 w-5" />,
+      },
+      {
+        name: "logout",
+        path: "/logout",
+        icon: <ArrowRightOnRectangleIcon className="h-5 w-5" />,
+      },
+    ],
+  },
+];
 
 export default function Sidebar({ brandName, routes }) {
   const sidenavType = "white";
@@ -73,4 +110,5 @@ Sidebar.propTypes = {
 
 Sidebar.defaultProps = {
   brandName: "Manager Panel",
+  routes: SidebarRoutes, // default routes assigned here
 };

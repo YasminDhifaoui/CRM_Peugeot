@@ -1,4 +1,4 @@
-import BASE_URL from '../api/base';
+import { BASE_URL } from "../../api/base"; // ✅ Use named import
 
 export const loginUser = async (cin, password) => {
   try {
@@ -7,6 +7,8 @@ export const loginUser = async (cin, password) => {
       headers: {
         "Content-Type": "application/json",  
       },
+      credentials: "include",
+
       body: JSON.stringify({ cin, password }),
     });
 
@@ -22,6 +24,28 @@ export const loginUser = async (cin, password) => {
     throw error;
   }
 };
+
+export const getSessionUser = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/auth/getSessionUser.php`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch session user");
+    }
+
+    return data.user;
+
+  } catch (error) {
+    console.error("Error fetching session user:", error);
+    throw error;
+  }
+};
+
 export const logoutUser = async () => {
   localStorage.removeItem("user");
 
@@ -38,7 +62,7 @@ export const logoutUser = async () => {
     }
 
     const data = await response.json();
-    console.log(data.message);  // Optional: show logout success message
+    console.log(data.message);  
 
   } catch (error) {
     console.error("Logout error:", error);
