@@ -29,6 +29,8 @@ export async function updateDossier(dossierData) {
       headers: {
         "Content-Type": "application/json",
       },
+        credentials: 'include',  // important to send cookies
+
       body: JSON.stringify(dossierData),
     });
 

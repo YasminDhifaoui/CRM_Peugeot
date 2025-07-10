@@ -37,24 +37,24 @@ const statisticsCardsData = [
   {
     icon: ArrowUpIcon,
     title: "Users",
-    value: "1,200",
+    value: "100",
     footer: { label: "since last week", value: "+5%", color: "text-green-500" },
   },
   {
     icon: ArrowUpIcon,
-    title: "Revenue",
-    value: "$9,300",
+    title: "Dossiers",
+    value: "3000",
     footer: { label: "this month", value: "+12%", color: "text-green-500" },
   },
   {
     icon: ArrowUpIcon,
-    title: "Projects",
+    title: "Livraison",
     value: "32",
     footer: { label: "delivered", value: "+2", color: "text-green-500" },
   },
   {
     icon: ArrowUpIcon,
-    title: "Tasks",
+    title: "Facturation",
     value: "142",
     footer: { label: "completed", value: "+10%", color: "text-green-500" },
   },
@@ -63,17 +63,17 @@ const statisticsCardsData = [
 const statisticsChartsData = [
   {
     title: "Weekly Sales",
-    description: "$5,000",
+    description: "50",
     footer: "updated 1 hour ago",
   },
   {
-    title: "New Signups",
-    description: "420 users",
+    title: "Per mounth",
+    description: "42 ",
     footer: "updated today",
   },
   {
-    title: "Server Load",
-    description: "65%",
+    title: "Per year",
+    description: "65",
     footer: "updated 5 minutes ago",
   },
 ];

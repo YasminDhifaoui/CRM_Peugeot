@@ -7,7 +7,7 @@ import Sidebar from "../../../widgets/layout/manager-layout/sidebar";
 import Navbar from "../../../widgets/layout/manager-layout/navbar";
 
 export function UserList() {
-  const navigate = useNavigate();  // <--- Use this inside your component
+  const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -17,12 +17,13 @@ export function UserList() {
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedUser, setEditedUser] = useState({});
 
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchUsers = async () => {
     try {
       const res = await fetchUserList();
       setUsers(res.message);
-      setFilteredUsers(res.message);
     } catch (err) {
       setError(err.message || "Une erreur est survenue, veuillez réessayer.");
     }
@@ -31,6 +32,41 @@ export function UserList() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  // Combine filters, search, and sorting
+  useEffect(() => {
+    let filtered = [...users];
+
+    // Role filter
+    if (activeRole !== "all") {
+      filtered = filtered.filter(
+        (user) => user.role.toLowerCase() === activeRole
+      );
+    }
+
+    // Search filter (on nom, prenom, cin, telephone)
+    if (searchTerm.trim() !== "") {
+      filtered = filtered.filter((user) =>
+        `${user.nom} ${user.prenom} ${user.cin} ${user.telephone}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Sorting
+    if (sortConfig.key) {
+      filtered.sort((a, b) => {
+        const aValue = a[sortConfig.key]?.toString().toLowerCase() || "";
+        const bValue = b[sortConfig.key]?.toString().toLowerCase() || "";
+
+        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+
+    setFilteredUsers(filtered);
+  }, [users, activeRole, searchTerm, sortConfig]);
 
   // Role color class for text
   const roleColor = (role) => {
@@ -88,40 +124,40 @@ export function UserList() {
 
   const handleFilter = (role) => {
     setActiveRole(role);
-    if (role === "all") {
-      setFilteredUsers(users);
-    } else {
-      setFilteredUsers(
-        users.filter((user) => user.role.toLowerCase() === role)
-      );
+  };
+
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
+    setSortConfig({ key, direction });
   };
 
   const handleEdit = (user) => {
-  setEditingUserId(user.id);
-  setEditedUser(user); // shallow copy
-};
+    setEditingUserId(user.id);
+    setEditedUser(user); // shallow copy
+  };
 
-const handleCancel = () => {
-  setEditingUserId(null);
-  setEditedUser({});
-};
-const handleSave = async () => {
-  try {
-    await updateUser(editedUser);
+  const handleCancel = () => {
     setEditingUserId(null);
     setEditedUser({});
-    fetchUsers();
-  } catch (err) {
-    alert("Erreur lors de la mise à jour : " + err.message);
-  }
-};
+  };
 
+  const handleSave = async () => {
+    try {
+      await updateUser(editedUser);
+      setEditingUserId(null);
+      setEditedUser({});
+      fetchUsers();
+    } catch (err) {
+      alert("Erreur lors de la mise à jour : " + err.message);
+    }
+  };
 
-const handleInputChange = (e) => {
-  setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
-};
-
+  const handleInputChange = (e) => {
+    setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -129,9 +165,9 @@ const handleInputChange = (e) => {
 
       <div className="flex flex-col flex-1 xl:ml-72 p-6">
         <Navbar />
-        <br></br>
+        <br />
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">User List</h2>
+          <h2 className="text-2xl font-bold">List des utilisateurs</h2>
           <button
             onClick={() => navigate("/managerDashboard/addUser")}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
@@ -141,7 +177,7 @@ const handleInputChange = (e) => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="mb-6 flex gap-4">
+        <div className="mb-4 flex flex-wrap gap-4 items-center">
           {["all", "manager", "agentc", "responsablev"].map((role) => (
             <button
               key={role}
@@ -149,120 +185,137 @@ const handleInputChange = (e) => {
               className={roleBtnColor(role, activeRole === role)}
             >
               {role === "all"
-                ? "All Roles"
+                ? "Tous les Roles"
                 : role.charAt(0).toUpperCase() + role.slice(1)}
             </button>
           ))}
+
+          {/* Search Bar */}
+          <input
+            type="text"
+            placeholder="Rechercher un utilisateur..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="ml-auto w-full max-w-xs px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
         </div>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
         {filteredUsers.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white shadow rounded-lg">
-              <thead className="bg-blue-600 text-white">
-                <tr>
-                  <th className="py-3 px-6 text-left">Image</th>
-                  <th className="py-3 px-6 text-left">Nom</th>
-                  <th className="py-3 px-6 text-left">Prénom</th>
-                  <th className="py-3 px-6 text-left">Role</th>
-                  <th className="py-3 px-6 text-left">CIN</th>
-                  <th className="py-3 px-6 text-left">Téléphone</th>
-                      <th className="py-3 px-6 text-left">Actions</th>
-                </tr>
-              </thead>
-             <tbody>
-  {filteredUsers.map(({ id, photopath, nom, prenom, role, cin, telephone }) => (
-    <tr key={id} className="border-b border-gray-200 hover:bg-gray-100">
-      {/* Image */}
-      <td className="py-3 px-6">
-        <img
-          src={photopath ? `${PICTURE_URL}/${photopath}` : "/img/default-avatar.png"}
-          alt="User"
-          className="w-12 h-12 rounded-full"
-        />
-      </td>
-
-      {/* Nom */}
-      <td className="py-3 px-6">
-        {editingUserId === id ? (
-          <input
-            name="nom"
-            value={editedUser.nom}
-            onChange={handleInputChange}
-            className="border p-1 rounded w-full"
-          />
-        ) : (
-          nom
+          <div className="overflow-x-auto rounded-lg shadow-sm border border-gray-200 bg-white">
+            <table className="min-w-full text-sm text-gray-800">
+              <thead className="bg-blue-600 text-white text-xs uppercase tracking-wider">
+  <tr>
+    {[
+      { key: "photopath", label: "Image", noSort: true },
+      { key: "nom", label: "Nom" },
+      { key: "prenom", label: "Prénom" },
+      { key: "role", label: "Rôle" },
+      { key: "cin", label: "CIN" },
+      { key: "telephone", label: "Téléphone" },
+    ].map(({ key, label, noSort }) => (
+      <th
+        key={key}
+        onClick={() => !noSort && handleSort(key)}
+        className={`py-2 px-3 text-left cursor-pointer select-none ${
+          noSort ? "cursor-default" : ""
+        }`}
+      >
+        {label}{" "}
+        {!noSort && (
+          sortConfig.key === key ? (sortConfig.direction === "asc" ? "▲" : "▼") : "⇅"
         )}
-      </td>
+      </th>
+    ))}
+    <th className="py-2 px-3 text-left">Actions</th>
+  </tr>
+</thead>
 
-      {/* Prénom */}
-      <td className="py-3 px-6">
-        {editingUserId === id ? (
-          <input
-            name="prenom"
-            value={editedUser.prenom}
-            onChange={handleInputChange}
-            className="border p-1 rounded w-full"
-          />
-        ) : (
-          prenom
-        )}
-      </td>
-
-      {/* Role (not editable for now) */}
-      <td className={`py-3 px-6 ${roleColor(role)}`}>{role}</td>
-
-      {/* CIN (not editable) */}
-      <td className="py-3 px-6">{cin}</td>
-
-      {/* Téléphone */}
-      <td className="py-3 px-6">
-        {editingUserId === id ? (
-          <input
-            name="telephone"
-            value={editedUser.telephone}
-            onChange={handleInputChange}
-            className="border p-1 rounded w-full"
-          />
-        ) : (
-          telephone || "-"
-        )}
-      </td>
-
-      {/* Action buttons */}
-      <td className="py-3 px-6 space-x-2">
-        {editingUserId === id ? (
-          <>
-            <button
-              onClick={handleSave}
-              className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-            >
-              Save
-            </button>
-            <button
-              onClick={handleCancel}
-              className="bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
-            >
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() =>
-              handleEdit({ id, nom, prenom, role, cin, telephone })
-            }
-            className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-          >
-            Edit
-          </button>
-        )}
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+              <tbody className="divide-y divide-gray-100">
+                {filteredUsers.map(
+                  ({ id, photopath, nom, prenom, role, cin, telephone }) => (
+                    <tr key={id} className="hover:bg-gray-50 transition">
+                      <td className="px-4 py-3">
+                        <img
+                          src={
+                            photopath
+                              ? `${PICTURE_URL}/${photopath}`
+                              : "/img/default-avatar.png"
+                          }
+                          alt="User"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      </td>
+                      <td className="px-4 py-3">
+                        {editingUserId === id ? (
+                          <input
+                            name="nom"
+                            value={editedUser.nom}
+                            onChange={handleInputChange}
+                            className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                          />
+                        ) : (
+                          nom
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        {editingUserId === id ? (
+                          <input
+                            name="prenom"
+                            value={editedUser.prenom}
+                            onChange={handleInputChange}
+                            className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                          />
+                        ) : (
+                          prenom
+                        )}
+                      </td>
+                      <td className={`px-4 py-3 ${roleColor(role)}`}>{role}</td>
+                      <td className="px-4 py-3">{cin}</td>
+                      <td className="px-4 py-3">
+                        {editingUserId === id ? (
+                          <input
+                            name="telephone"
+                            value={editedUser.telephone}
+                            onChange={handleInputChange}
+                            className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                          />
+                        ) : (
+                          telephone || "—"
+                        )}
+                      </td>
+                      <td className="px-4 py-3 space-x-2 whitespace-nowrap">
+                        {editingUserId === id ? (
+                          <>
+                            <button
+                              onClick={handleSave}
+                              className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs transition"
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={handleCancel}
+                              className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded text-xs transition"
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            onClick={() =>
+                              handleEdit({ id, nom, prenom, role, cin, telephone })
+                            }
+                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs transition"
+                          >
+                            Modifier
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
             </table>
           </div>
         ) : (

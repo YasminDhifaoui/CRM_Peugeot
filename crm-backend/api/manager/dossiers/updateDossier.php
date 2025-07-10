@@ -24,19 +24,32 @@ $data = json_decode(file_get_contents("php://input"), true);
 if (
     !isset($data['id']) ||
     !is_numeric($data['id']) ||
-    empty($data['status'])
+    !isset($data['status']) ||
+    !is_string($data['status']) ||
+    trim($data['status']) === ''
 ) {
     http_response_code(400);
-    echo json_encode(['error' => 'Données invalides']);
+    echo json_encode(['error' => 'Données invalides : ID et status sont requis']);
     exit;
 }
 
-// 🧼 Sanitize input
 $id = intval($data['id']);
-$status = htmlspecialchars(trim($data['status']));
-$commentaire = isset($data['commentaire']) ? htmlspecialchars(trim($data['commentaire'])) : null;
-$immatriculation = isset($data['immatriculation']) ? htmlspecialchars(trim($data['immatriculation'])) : null;
-$modeles = isset($data['modeles']) ? htmlspecialchars(trim($data['modeles'])) : null;
+$status = trim($data['status']);
+
+// Sanitize and set optional fields
+$commentaire = isset($data['commentaire']) && is_string($data['commentaire']) ? trim($data['commentaire']) : null;
+$immatriculation = isset($data['immatriculation']) && is_string($data['immatriculation']) ? trim($data['immatriculation']) : null;
+$modeles = isset($data['modeles']) && is_string($data['modeles']) ? trim($data['modeles']) : null;
+
+// Validate immatriculation only if status is 'Livraison' (case insensitive)
+if (
+    $immatriculation !== null && 
+    strcasecmp($status, 'Livraison') !== 0
+) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Immatriculation ne peut être mise à jour que si le statut est "Livraison".']);
+    exit;
+}
 
 try {
     $sql = "UPDATE dossiers 
@@ -49,10 +62,10 @@ try {
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        ':status' => $status,
-        ':commentaire' => $commentaire,
-        ':immatriculation' => $immatriculation,
-        ':modeles' => $modeles,
+        ':status' => htmlspecialchars($status),
+        ':commentaire' => $commentaire !== null ? htmlspecialchars($commentaire) : null,
+        ':immatriculation' => $immatriculation !== null ? htmlspecialchars($immatriculation) : null,
+        ':modeles' => $modeles !== null ? htmlspecialchars($modeles) : null,
         ':id' => $id
     ]);
 

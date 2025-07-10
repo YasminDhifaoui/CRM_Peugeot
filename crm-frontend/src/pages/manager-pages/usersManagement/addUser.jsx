@@ -59,7 +59,7 @@ export function AddUser() {
         {/* Center the form vertically & horizontally */}
         <div className="flex flex-col items-center justify-center flex-grow bg-gray-50 p-6">
           <div className="bg-white p-8 rounded shadow-md w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-6">Add New User</h2>
+            <h2 className="text-2xl font-bold mb-6">Ajouter un nouveau utilisateur</h2>
 
             {error && <p className="text-red-600 mb-4">{error}</p>}
             {success && <p className="text-green-600 mb-4">{success}</p>}
@@ -129,13 +129,17 @@ export function AddUser() {
               </div>
 
                 {/* Image file input */}
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Photo <span className="text-red-500"></span>
+                </label>
              <input
                 type="file"
                 name="photo"
                 accept="image/*"
                 onChange={(e) => setForm((prev) => ({ ...prev, photo: e.target.files[0] }))}
-                required
               />
+                </div>
 
 
               {/* Password */}
@@ -178,7 +182,7 @@ export function AddUser() {
                   type="submit"
                   className="w-full py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
                 >
-                  Add User
+                  Ajouter
                 </button>
               </div>
             </form>

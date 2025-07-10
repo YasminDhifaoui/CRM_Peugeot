@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../../widgets/layout/manager-layout/sidebar";
 import Navbar from "../../../widgets/layout/manager-layout/navbar";
 import { dossiersList } from "../../../services/manager_services/dossiersService";
+import { updateDossier } from "../../../services/manager_services/dossiersService";
 
 export function DossiersList() {
   const [dossiers, setDossiers] = useState([]);
@@ -10,6 +11,9 @@ export function DossiersList() {
   const [statusFilter, setStatusFilter] = useState("Tous");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
   const [error, setError] = useState("");
+
+  const [editingId, setEditingId] = useState(null);
+  const [editedDossier, setEditedDossier] = useState({});
 
   useEffect(() => {
     const fetchDossiers = async () => {
@@ -62,11 +66,41 @@ export function DossiersList() {
     }));
   };
 
-  const handleUpdate = (id) => {
-    alert(`Update dossier with id: ${id}`);
+  const startEditing = (dossier) => {
+    setEditingId(dossier.id);
+    setEditedDossier({ ...dossier });
   };
 
-  const statuses = ["Tous", "Devis", "Commande", "Facturation", "Livraison", "Blockage"];
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditedDossier({});
+  };
+
+  const handleInputChange = (e) => {
+    setEditedDossier({ ...editedDossier, [e.target.name]: e.target.value });
+  };
+
+  const saveEditing = async () => {
+    try {
+      await updateDossier(editedDossier);
+      setEditingId(null);
+      setEditedDossier({});
+      // Refresh data
+      const res = await dossiersList();
+      setDossiers(res.message || []);
+    } catch (err) {
+      alert("Erreur lors de la mise à jour : " + err.message);
+    }
+  };
+
+  const statuses = [
+    "Tous",
+    "Devis",
+    "Commande",
+    "Facturation",
+    "Livraison",
+    "Blockage",
+  ];
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-sm">
@@ -87,7 +121,7 @@ export function DossiersList() {
             className="border border-gray-300 rounded px-3 py-1 w-60 text-sm"
           />
 
-          <select
+           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className={`border border-gray-300 rounded px-3 py-1 w-52 font-semibold text-white text-sm ${
@@ -108,11 +142,12 @@ export function DossiersList() {
               Tous les statuts
             </option>
             <option value="Devis" className="bg-pink-300 text-black">Devis</option>
-            <option value="Commande" className="bg-yellow-300 text-black">Commande</option>
-            <option value="Facturation" className="bg-green-300 text-black">Facturation</option>
+            <option value="Commande" className="bg-yellow-200 text-black">Commande</option>
+            <option value="Facturation" className="bg-green-400 text-black">Facturation</option>
             <option value="Livraison" className="bg-blue-300 text-black">Livraison</option>
-            <option value="Blockage" className="bg-red-300 text-black">Blockage</option>
+            <option value="Blockage" className="bg-red-600 text-black">Blockage</option>
           </select>
+
         </div>
 
         {/* 📋 Table */}
@@ -149,64 +184,176 @@ export function DossiersList() {
                 </tr>
               </thead>
               <tbody>
-                {filteredDossiers.map(
-                  ({
-                    id,
-                    date_creation,
-                    nom_prenom_client,
-                    telephone,
-                    modeles,
-                    commentaire,
-                    status,
-                    immatriculation,
-                    updated_at,
-                    agent_full_name,
-                  }) => {
-                    let rowColor = "";
-                    switch (status.toLowerCase()) {
-                      case "devis":
-                        rowColor = "bg-rose-100";
-                        break;
-                      case "commande":
-                        rowColor = "bg-yellow-100";
-                        break;
-                      case "facturation":
-                        rowColor = "bg-green-100";
-                        break;
-                      case "livraison":
-                        rowColor = "bg-blue-100";
-                        break;
-                      case "blockage":
-                        rowColor = "bg-red-100";
-                        break;
-                      default:
-                        rowColor = "bg-white";
-                    }
-
-                    return (
-                      <tr key={id} className={`${rowColor} border-b border-gray-200 hover:bg-opacity-80`}>
-                        <td className="p-2">{new Date(date_creation).toLocaleString()}</td>
-                        <td className="p-2">{nom_prenom_client}</td>
-                        <td className="p-2">{telephone}</td>
-                        <td className="p-2">{modeles}</td>
-                        <td className="p-2 font-semibold">{status}</td>
-                        <td className="p-2">{commentaire}</td>
-                        <td className="p-2">{immatriculation || "—"}</td>
-                        <td className="p-2">{agent_full_name || "—"}</td>
-                        <td className="p-2">{updated_at ? new Date(updated_at).toLocaleString() : "—"}</td>
-                        <td className="p-2">
-                          <button
-                            onClick={() => handleUpdate(id)}
-                            className="bg-gray-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded text-xs"
-                          >
-                            Modifier
-                          </button>
-                        </td>
-                      </tr>
-                    );
+                {filteredDossiers.map((d) => {
+                  let rowColor = "";
+                  switch (d.status.toLowerCase()) {
+                    case "devis":
+                      rowColor = "bg-rose-300";
+                      break;
+                    case "commande":
+                      rowColor = "bg-yellow-200";
+                      break;
+                    case "facturation":
+                      rowColor = "bg-green-400";
+                      break;
+                    case "livraison":
+                      rowColor = "bg-blue-300";
+                      break;
+                    case "blockage":
+                      rowColor = "bg-red-500";
+                      break;
+                    default:
+                      rowColor = "bg-white";
                   }
-                )}
-              </tbody>
+
+                  const isEditing = editingId === d.id;
+
+                   const handleFileChange = (e) => {
+      setEditedDossier({ ...editedDossier, file: e.target.files[0] });
+    };
+
+                  return (
+      <tr
+        key={d.id}
+        className={`${rowColor} border-b border-gray-200 hover:bg-opacity-80`}
+      >
+        {/* Other cells as plain text */}
+        <td className="p-2">{d.date_creation ? new Date(d.date_creation).toLocaleString() : "—"}</td>
+
+        {/* Editable fields */}
+        <td className="p-2">
+          {isEditing ? (
+            <input
+              name="nom_prenom_client"
+              value={editedDossier.nom_prenom_client || ""}
+              onChange={handleInputChange}
+              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+            />
+          ) : (
+            d.nom_prenom_client
+          )}
+        </td>
+
+        <td className="p-2">
+          {isEditing ? (
+            <input
+              name="telephone"
+              value={editedDossier.telephone || ""}
+              onChange={handleInputChange}
+              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+            />
+          ) : (
+            d.telephone
+          )}
+        </td>
+
+        <td className="p-2">
+          {isEditing ? (
+            <input
+              name="modeles"
+              value={editedDossier.modeles || ""}
+              onChange={handleInputChange}
+              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+            />
+          ) : (
+            d.modeles
+          )}
+        </td>
+
+        <td className="p-2 font-semibold">
+          {isEditing ? (
+            <select
+              name="status"
+              value={editedDossier.status || ""}
+              onChange={handleInputChange}
+              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+            >
+              {statuses
+                .filter((s) => s !== "Tous")
+                .map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+            </select>
+          ) : (
+            d.status
+          )}
+        </td>
+
+        <td className="p-2">
+          {isEditing ? (
+            <>
+              <textarea
+                name="commentaire"
+                value={editedDossier.commentaire || ""}
+                onChange={handleInputChange}
+                rows={3}
+                className="border border-gray-300 rounded px-2 py-1 w-full text-sm mb-1 resize-none"
+              />
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept="image/*,application/pdf" // adjust mime types as needed
+                className="text-xs"
+              />
+              {editedDossier.file && (
+                <p className="text-xs text-gray-600 mt-1">
+                  Fichier sélectionné : {editedDossier.file.name}
+                </p>
+              )}
+            </>
+          ) : (
+            d.commentaire
+          )}
+        </td>
+
+        {/* Other fields as plain text */}
+<td className="p-2">
+  {isEditing && (editedDossier.status?.toLowerCase() === "livraison") ? (
+    <input
+      name="immatriculation"
+      value={editedDossier.immatriculation || ""}
+      onChange={handleInputChange}
+        maxLength={18}
+      className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+    />
+  ) : (
+    d.immatriculation || "—"
+  )}
+</td>
+        <td className="p-2">{d.agent_full_name || "—"}</td>
+        <td className="p-2">{d.updated_at ? new Date(d.updated_at).toLocaleString() : "—"}</td>
+
+        <td className="p-2 space-x-1">
+          {isEditing ? (
+            <>
+              <button
+                onClick={saveEditing}
+                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs transition"
+              >
+                Sauvegarder
+              </button>
+              <button
+                onClick={cancelEditing}
+                className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded text-xs transition"
+              >
+                Annuler
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => startEditing(d)}
+              className="bg-gray-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded text-xs"
+            >
+              Modifier
+            </button>
+          )}
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
             </table>
           </div>
         ) : (
