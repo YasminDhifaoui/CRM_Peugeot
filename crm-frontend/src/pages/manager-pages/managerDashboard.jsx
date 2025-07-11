@@ -87,48 +87,49 @@ export function Home() {
       {/* Main content */}
       <div className="flex flex-col flex-1 xl:ml-72">
         {/* Navbar */}
-      <Navbar />
+        <Navbar />
+        <div className="bg-blue-100 shadow-sm border-b border-gray-200 px-6 py-3 flex justify-between items-center">
+          <main className="flex-1 p-6">
+            {/* Cards */}
+            <div className="grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4 mb-12">
+              {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
+                <StatisticsCard
+                  key={title}
+                  {...rest}
+                  title={title}
+                  icon={React.createElement(icon, {
+                    className: "w-6 h-6 text-white",
+                  })}
+                  footer={
+                    <Typography className="font-normal text-blue-gray-600">
+                      <strong className={footer.color}>{footer.value}</strong>
+                      &nbsp;{footer.label}
+                    </Typography>
+                  }
+                />
+              ))}
+            </div>
 
-        <main className="flex-1 p-6">
-          {/* Cards */}
-          <div className="grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4 mb-12">
-            {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
-              <StatisticsCard
-                key={title}
-                {...rest}
-                title={title}
-                icon={React.createElement(icon, {
-                  className: "w-6 h-6 text-white",
-                })}
-                footer={
-                  <Typography className="font-normal text-blue-gray-600">
-                    <strong className={footer.color}>{footer.value}</strong>
-                    &nbsp;{footer.label}
-                  </Typography>
-                }
-              />
-            ))}
-          </div>
-
-          {/* Charts */}
-          <div className="grid gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
-            {statisticsChartsData.map((chart) => (
-              <StatisticsChart
-                key={chart.title}
-                {...chart}
-                footer={
-                  <Typography
-                    variant="small"
-                    className="flex items-center font-normal text-blue-gray-600"
-                  >
-                    <ClockIcon className="h-4 w-4 text-blue-gray-400 mr-1" />
-                    {chart.footer}
-                  </Typography>
-                }
-              />
-            ))}
-          </div>
-        </main>
+            {/* Charts */}
+            <div className="grid gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
+              {statisticsChartsData.map((chart) => (
+                <StatisticsChart
+                  key={chart.title}
+                  {...chart}
+                  footer={
+                    <Typography
+                      variant="small"
+                      className="flex items-center font-normal text-blue-gray-600"
+                    >
+                      <ClockIcon className="h-4 w-4 text-blue-gray-400 mr-1" />
+                      {chart.footer}
+                    </Typography>
+                  }
+                />
+              ))}
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );

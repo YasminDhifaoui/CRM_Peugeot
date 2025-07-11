@@ -167,7 +167,7 @@ export function UserList() {
         <Navbar />
         <br />
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">List des utilisateurs</h2>
+          <h2 className="text-2xl font-bold">Liste des utilisateurs</h2>
           <button
             onClick={() => navigate("/managerDashboard/addUser")}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"

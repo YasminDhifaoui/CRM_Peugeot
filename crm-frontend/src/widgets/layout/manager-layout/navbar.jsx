@@ -8,7 +8,7 @@ function Navbar() {
 <nav className="bg-blue-100 shadow-sm border-b border-gray-200 px-6 py-3 flex justify-between items-center">
       {/* Logo / Title */}
       <div className="text-xl font-bold text-blue-600 tracking-wide">
-        MyDashboard
+        Manager Dashboard
       </div>
 
       {/* Right Side: Profile Dropdown */}

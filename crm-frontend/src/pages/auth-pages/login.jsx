@@ -30,104 +30,117 @@ const handleSubmit = async (e) => {
 };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* Left: Form Section */}
-      <div className="flex items-center justify-center bg-gray-50 px-8 py-12">
-        <div className="w-full max-w-md">
-          <div className="mb-10 text-center">
-            <Typography variant="h2" className="font-bold text-blue-700 mb-2">
-              Se connecter
-            </Typography>
-            <Typography
-              variant="paragraph"
-              color="blue-gray"
-              className="text-base font-normal"
-            >
-              Accédez à votre compte avec votre cin et mot de passe
-            </Typography>
-          </div>
+   <div className="min-h-screen grid grid-cols-1 lg:grid-cols-5">
+  {/* Left: Image Section (3/5 of the screen) */}
+  <div className="lg:col-span-3 relative hidden lg:block">
+    <img
+      src="/img/img-login/showroom.png"
+      alt="Sign-in Visual"
+      className="w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-black/20" />
+  </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="mb-1 font-medium"
-              >
-                CIN
-              </Typography>
-              <Input
-                size="lg"
-                placeholder="********"
-                value={cin}
-                onChange={(e) => setCin(e.target.value)}
-                className="!border-t-blue-200 focus:!border-t-blue-700"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-                required
-              />
-            </div>
+  {/* Right: Form Section (2/5 of the screen) */}
+  <div className="lg:col-span-2 flex items-center justify-center bg-black px-8 py-12 text-white">
+    <div className="w-full max-w-md">
+      <div className="mb-10 text-center">
+ <div className="flex justify-center items-center gap-8 mb-6">
+  <img
+    src="/img/img-login/citreonLogo.png"
+    alt="Citroën"
+    className="w-[8.5rem] h-auto transition-transform duration-300 hover:scale-110"
+  />
+  <img
+    src="/img/img-login/peugeotLogo.png"
+    alt="Peugeot"
+    className="w-[8.5rem] h-auto transition-transform duration-300 hover:scale-110"
+  />
+  <img
+    src="/img/img-login/opelLogo.png"
+    alt="Opel"
+   className="w-[8.5rem] h-auto transition-transform duration-300 hover:scale-110"
 
-            <div>
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="mb-1 font-medium"
-              >
-                Mot de passe
-              </Typography>
-              <Input
-                type="password"
-                size="lg"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="!border-t-blue-200 focus:!border-t-blue-700"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-                required
-              />
-            </div>
+  />
+</div>
 
-            <Button
-              type="submit"
-              className="mt-4 bg-blue-700 hover:bg-blue-800 transition duration-300"
-              fullWidth
-            >
-              Se connecter
-            </Button>
 
-            {error && (
-              <p className="text-red-600 mt-4 text-center font-medium">{error}</p>
-            )}
-            {success && (
-              <p className="text-green-600 mt-4 text-center font-medium">
-                {success}
-              </p>
-            )}
+  <Typography variant="h2" className="font-georgia text-white-500 mb-2 text-2xl">
+      Bienvenue
+      chez Auto Lion !<br></br>Pilotez vos ventes, boostez vos performances.  
+  </Typography>
+  
+</div>
 
-            {/* Forgot Password */}
-            <div className="text-center mt-4">
-              <a href="#" className="text-sm text-blue-700 hover:underline">
-                Mot de passe oublié?
-              </a>
-            </div>
-          </form>
-        </div>
-      </div>
 
-      {/* Right: Image Section */}
-      <div className="hidden lg:block relative">
-        <img
-          src="/img/Peaugoet-Pannel.png"
-          alt="Sign-in Visual"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+  {/* CIN Row */}
+  <div className="flex items-center gap-4">
+    <Typography variant="small" className="font-georgia text-white w-32">
+      CIN
+    </Typography>
+    <Input
+      size="lg"
+      placeholder="********"
+      value={cin}
+      onChange={(e) => setCin(e.target.value)}
+      className="flex-grow bg-gray-300 text-black !border-t-gray-200 focus:!border-t-blue-700"
+      labelProps={{
+        className: "before:content-none after:content-none",
+      }}
+      required
+    />
+  </div>
+
+  {/* Mot de passe Row */}
+  <div className="flex items-center gap-4">
+    <Typography variant="small" className="font-georgia text-white w-32">
+      Mot de passe
+    </Typography>
+    <Input
+      type="password"
+      size="lg"
+      placeholder="••••••••"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      className="flex-grow bg-gray-300 text-black !border-t-blue-200 focus:!border-t-blue-700"
+      labelProps={{
+        className: "before:content-none after:content-none",
+      }}
+      required
+    />
+  </div>
+
+  {/* Submit Button */}
+   <div className="flex justify-center items-center gap-8 mb-6">
+
+  <Button
+    type="submit"
+    className="mt-4 bg-gray-800 hover:bg-gray-800 transition duration-300"
+  >
+    Se connecter
+  </Button>
+</div>
+  {/* Error/Success Messages */}
+  {error && (
+    <p className="text-red-500 mt-4 text-center font-medium">{error}</p>
+  )}
+  {success && (
+    <p className="text-green-500 mt-4 text-center font-medium">{success}</p>
+  )}
+
+  {/* Forgot Password */}
+  <div className="text-center mt-4">
+    <a href="#" className="text-sm text-blue-400 hover:underline">
+      Mot de passe oublié?
+    </a>
+  </div>
+</form>
+
     </div>
+  </div>
+</div>
+
   );
 }
 

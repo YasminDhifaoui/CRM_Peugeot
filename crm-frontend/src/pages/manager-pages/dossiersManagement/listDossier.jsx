@@ -180,7 +180,7 @@ export function DossiersList() {
                       )}
                     </th>
                   ))}
-                  <th className="py-2 px-3 text-left">Actions</th>
+                  <th className="py-2 px-3 text-left"></th>
                 </tr>
               </thead>
               <tbody>

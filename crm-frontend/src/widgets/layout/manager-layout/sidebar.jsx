@@ -42,9 +42,9 @@ const SidebarRoutes = [
 
 export default function Sidebar({ brandName, routes }) {
   return (
-    <aside className="bg-gradient-to-br from-blue-400 to-blue-700 text-white w-72 h-screen fixed top-0 left-0 z-50 shadow-lg">
+    <aside className="bg-gradient-to-br from-gray-500 to-gray-700 text-black w-72 h-screen fixed top-0 left-0 z-50 shadow-lg">
       {/* Header */}
-      <div className="p-6 border-b border-blue-600 flex justify-between items-center">
+      <div className="p-6 border-b border-black-600 flex justify-between items-center">
         <Typography variant="h6" className="text-white tracking-wide">
           {brandName}
         </Typography>
@@ -95,6 +95,6 @@ Sidebar.propTypes = {
 };
 
 Sidebar.defaultProps = {
-  brandName: "Peugeot CRM",
+  brandName: "Auto Lion CRM",
   routes: SidebarRoutes,
 };
