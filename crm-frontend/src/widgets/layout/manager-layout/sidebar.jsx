@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
-import { Typography, Button, IconButton } from "@material-tailwind/react";
+import { Typography, IconButton } from "@material-tailwind/react";
 import {
   XMarkIcon,
   HomeIcon,
@@ -42,9 +42,9 @@ const SidebarRoutes = [
 
 export default function Sidebar({ brandName, routes }) {
   return (
-    <aside className="bg-gradient-to-br from-gray-500 to-gray-700 text-black w-72 h-screen fixed top-0 left-0 z-50 shadow-lg">
+    <aside className="bg-gray-900 text-white w-72 h-screen fixed top-0 left-0 z-50 shadow-lg font-[Georgia]">
       {/* Header */}
-      <div className="p-6 border-b border-black-600 flex justify-between items-center">
+      <div className="p-6 border-b border-gray-800 flex justify-between items-center">
         <Typography variant="h6" className="text-white tracking-wide">
           {brandName}
         </Typography>
@@ -60,7 +60,7 @@ export default function Sidebar({ brandName, routes }) {
             {title && (
               <Typography
                 variant="small"
-                className="px-4 py-2 uppercase text-sm text-blue-200 font-semibold tracking-wide"
+                className="px-4 py-2 uppercase text-sm text-blue-400 font-semibold tracking-wide"
               >
                 {title}
               </Typography>
@@ -70,10 +70,12 @@ export default function Sidebar({ brandName, routes }) {
                 <NavLink to={`${layout}${path}`}>
                   {({ isActive }) => (
                     <div
-                      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer
-                        ${isActive
-                          ? "bg-white text-blue-900 font-semibold shadow-sm"
-                          : "hover:bg-blue-800 hover:text-white text-blue-100"}`}
+                      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer 
+                        ${
+                          isActive
+                            ? "bg-white text-blue-900 font-bold shadow"
+                            : "hover:bg-gray-800 hover:text-white text-gray-300"
+                        }`}
                     >
                       <span className="w-5 h-5">{icon}</span>
                       <span className="capitalize">{name}</span>

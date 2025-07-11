@@ -5,13 +5,13 @@ function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-<nav className="bg-blue-100 shadow-sm border-b border-gray-200 px-6 py-3 flex justify-between items-center">
-      {/* Logo / Title */}
-      <div className="text-xl font-bold text-blue-600 tracking-wide">
-        Manager Dashboard
+    <nav className="bg-gray-700 border-b border-gray-300 px-6 py-3 flex justify-between items-center font-[Georgia] shadow-sm">
+      {/* Title */}
+     <div className="text-xl font-bold text-blue-900 tracking-wide">
+         {/*Manager Dashboard*/}
       </div>
 
-      {/* Right Side: Profile Dropdown */}
+      {/* Profile Dropdown */}
       <div className="relative">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -20,13 +20,13 @@ function Navbar() {
           <img
             src="/img/default-avatar.png"
             alt="User Avatar"
-            className="w-8 h-8 rounded-full border"
+            className="w-9 h-9 rounded-full border border-gray-400 shadow-sm"
           />
-          <span className="hidden sm:inline-block text-sm font-medium text-gray-700">
+          <span className="hidden sm:inline-block text-sm font-semibold text-white-800">
             Admin
           </span>
           <svg
-            className="w-4 h-4 text-gray-500"
+            className="w-4 h-4 text-white-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,21 +37,21 @@ function Navbar() {
 
         {dropdownOpen && (
           <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
-            <ul className="py-2 text-sm text-gray-700">
+            <ul className="py-2 text-sm text-gray-700 font-medium">
               <li>
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 hover:bg-gray-100"
+                  className="block px-4 py-2 hover:bg-gray-100 transition duration-200"
                 >
-                  Profile
+                  Profil
                 </Link>
               </li>
               <li>
                 <Link
                   to="/logout"
-                  className="block px-4 py-2 hover:bg-gray-100 text-red-500"
+                  className="block px-4 py-2 hover:bg-gray-100 text-red-600 transition duration-200"
                 >
-                  Logout
+                  Déconnexion
                 </Link>
               </li>
             </ul>

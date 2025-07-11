@@ -49,12 +49,17 @@ export function AddUser() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-400 text-white font-[Georgia]">
+      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main content area with margin-left only once */}
-      <div className="flex flex-col flex-1 xl:ml-72 p-6">
+      {/* Main content */}
+      <div className="flex flex-col flex-1 xl:ml-72">
+        {/* Navbar */}
         <Navbar />
+
+        {/* Content */}
+        <main className="flex-1 p-6 bg-gray-500">
 
         {/* Center the form vertically & horizontally */}
         <div className="flex flex-col items-center justify-center flex-grow bg-gray-50 p-6">
@@ -188,6 +193,7 @@ export function AddUser() {
             </form>
           </div>
         </div>
+        </main>
       </div>
     </div>
   );

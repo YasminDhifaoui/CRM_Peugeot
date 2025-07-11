@@ -32,6 +32,6 @@ if ($user && password_verify($password, $user['password'])) {
     echo json_encode(['message' => 'Login successful', 'user' => $_SESSION['user']]);
 } else {
     http_response_code(401);
-    echo json_encode(['error' => 'Invalid CIN or password']);
+    echo json_encode(['error' => 'CIN ou mot de passe incorrect !']);
 }
 ?>

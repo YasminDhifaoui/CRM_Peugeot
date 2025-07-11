@@ -103,10 +103,17 @@ export function DossiersList() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-sm">
+   <div className="flex min-h-screen bg-gray-400 text-white font-[Georgia]">
+      {/* Sidebar */}
       <Sidebar />
-      <div className="flex flex-col flex-1 xl:ml-72 p-4">
+
+      {/* Main content */}
+      <div className="flex flex-col flex-1 xl:ml-72">
+        {/* Navbar */}
         <Navbar />
+
+        {/* Content */}
+        <main className="flex-1 p-6 bg-gray-500">
         <h2 className="text-xl font-bold mb-4">Liste des Dossiers</h2>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -359,6 +366,7 @@ export function DossiersList() {
         ) : (
           <p>Aucun dossier trouvé.</p>
         )}
+        </main>
       </div>
     </div>
   );
