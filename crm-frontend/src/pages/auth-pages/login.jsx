@@ -120,7 +120,7 @@ export function SignIn() {
             <div className="flex justify-center items-center gap-8 mb-6">
               <Button
                 type="submit"
-                className="mt-4 bg-gray-800 hover:bg-gray-800 transition duration-300"
+                className="mt-4 bg-gray-600 hover:bg-gray-400 transition duration-300"
               >
                 Se connecter
               </Button>

@@ -1,12 +1,13 @@
 import React from "react";
 import { Typography, Card } from "@material-tailwind/react";
-import {
-  ArrowUpIcon,
-  ClockIcon,
-} from "@heroicons/react/24/outline";
-
-import Sidebar from "../../widgets/layout/manager-layout/sidebar";
+import { ArrowUpIcon, ClockIcon } from "@heroicons/react/24/outline";
 import Navbar from "../../widgets/layout/manager-layout/navbar";
+import CircularProgress from "../../widgets/statics/CircularProgress";
+import Sidebar from "../../widgets/layout/manager-layout/sidebar";
+import StaticBarChart from "../../widgets/statics/StaticBarChart";
+import VerticalBarChart from "../../widgets/statics/VerticalBarChart";
+import AgentProgressRadialChart from "../../widgets/statics/CarsProgressRadialChart";
+import CurrentDateTime from "../../widgets/layout/CurrentDateTime";
 
 // Statistic Card Component
 const StatisticsCard = ({ icon, title, value, footer }) => (
@@ -39,13 +40,13 @@ const StatisticsChart = ({ title, description, footer }) => (
 const statisticsCardsData = [
   {
     icon: ArrowUpIcon,
-    title: "Users",
+    title: "Total dossiers commerciales",
     value: "100",
     footer: { label: "since last week", value: "+5%", color: "text-green-400" },
   },
   {
     icon: ArrowUpIcon,
-    title: "Dossiers",
+    title: "Blockage",
     value: "3000",
     footer: { label: "this month", value: "+12%", color: "text-green-400" },
   },
@@ -81,21 +82,21 @@ const statisticsChartsData = [
   },
 ];
 
+
 export function Home() {
   return (
-<div className="flex min-h-screen bg-gray-400 text-white font-[Georgia]">
-      {/* Sidebar */}
-      <Sidebar />
+    <div className=" min-h-screen bg-gray-300 text-white font-[Georgia] relative flex flex-col mt-20">
+      {/* Navbar full width */}
+      <Navbar />
 
-      {/* Main content */}
-      <div className="flex flex-col flex-1 xl:ml-72">
-        {/* Navbar */}
-        <Navbar />
+      <div className="flex flex-1 pt-6 px-4 md:px-8">
+        {/* Sidebar */}
+        <Sidebar />
 
-        {/* Content */}
-        <main className="flex-1 p-6 bg-gray-500">
-          {/* Cards */}
-          <div className="grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4 mb-12">
+        {/* Left: Stats cards + charts */}
+        <main className="flex-1 pl-6 md:pl-12">
+          {/* Statistic Cards */}
+          <div className="grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4 mb-12 mt-8">
             {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
               <StatisticsCard
                 key={title}
@@ -113,29 +114,24 @@ export function Home() {
               />
             ))}
           </div>
+                <AgentProgressRadialChart />
 
-          {/* Charts */}
-          <div className="grid gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
-            {statisticsChartsData.map((chart) => (
-              <StatisticsChart
-                key={chart.title}
-                {...chart}
-                footer={
-                  <Typography
-                    variant="small"
-                    className="flex items-center font-normal text-blue-200"
-                  >
-                    <ClockIcon className="h-4 w-4 text-blue-400 mr-1" />
-                    {chart.footer}
-                  </Typography>
-                }
-              />
-            ))}
-          </div>
         </main>
+
+        {/* Right: Circular Progress & future content */}
+        <aside className="w-64 ml-8">
+          <CurrentDateTime />
+          <div className="mt-6">
+            <CircularProgress percent={10} />
+          </div>
+
+          <StaticBarChart />
+          <VerticalBarChart />
+
+
+        </aside>
       </div>
     </div>
   );
 }
-
 export default Home;

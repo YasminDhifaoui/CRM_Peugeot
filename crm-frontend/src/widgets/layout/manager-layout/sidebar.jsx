@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
-import { Typography, IconButton } from "@material-tailwind/react";
 import {
-  XMarkIcon,
   HomeIcon,
   UserIcon,
-  ArrowRightOnRectangleIcon,
   EnvelopeIcon,
+  ArrowRightOnRectangleIcon,
+   ArchiveBoxIcon,DocumentIcon
+
 } from "@heroicons/react/24/outline";
 
 // Sidebar routes data
@@ -19,84 +19,69 @@ const SidebarRoutes = [
       {
         name: "Dashboard",
         path: "/",
-        icon: <HomeIcon className="h-5 w-5" />,
+        icon: <HomeIcon className="h-6 w-6 text-white" />,
+        color: "bg-gray-600",
       },
       {
         name: "Utilisateurs",
         path: "/usersList",
-        icon: <UserIcon className="h-5 w-5" />,
+        icon: <UserIcon className="h-6 w-6 text-white" />,
+        color: "bg-blue-900",
       },
       {
-        name: "Dossiers Commerciales",
+        name: "Dossiers",
         path: "/dossiersList",
-        icon: <EnvelopeIcon className="h-5 w-5" />,
+        icon: <EnvelopeIcon className="h-6 w-6 text-white" />,
+        color: "bg-green-900",
+      },
+      {
+        name: "Leads",
+        path: "/leads",
+        icon: <DocumentIcon className="h-6 w-6 text-white" />,
+        color: "bg-purple-900",
+      },
+       {
+        name: "Archive",
+        path: "/archive",
+        icon: < ArchiveBoxIcon className="h-6 w-6 text-white" />,
+        color: "bg-yellow-700",
       },
       {
         name: "Déconnexion",
         path: "/logout",
-        icon: <ArrowRightOnRectangleIcon className="h-5 w-5" />,
+        icon: <ArrowRightOnRectangleIcon className="h-6 w-6 text-white" />,
+        color: "bg-red-800",
       },
     ],
   },
 ];
 
-export default function Sidebar({ brandName, routes }) {
+export default function Sidebar({ routes }) {
   return (
-    <aside className="bg-gray-900 text-white w-72 h-screen fixed top-0 left-0 z-50 shadow-lg font-[Georgia]">
-      {/* Header */}
-      <div className="p-6 border-b border-gray-800 flex justify-between items-center">
-        <Typography variant="h6" className="text-white tracking-wide">
-          {brandName}
-        </Typography>
-        <IconButton variant="text" size="sm" className="xl:hidden text-white">
-          <XMarkIcon className="h-5 w-5" />
-        </IconButton>
-      </div>
-
-      {/* Navigation */}
-      <div className="p-4 overflow-y-auto">
-        {routes.map(({ title, layout, pages }, idx) => (
-          <ul key={idx} className="mb-6">
-            {title && (
-              <Typography
-                variant="small"
-                className="px-4 py-2 uppercase text-sm text-blue-400 font-semibold tracking-wide"
-              >
-                {title}
-              </Typography>
-            )}
-            {pages.map(({ name, path, icon }) => (
-              <li key={name} className="my-1">
-                <NavLink to={`${layout}${path}`}>
-                  {({ isActive }) => (
-                    <div
-                      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer 
-                        ${
-                          isActive
-                            ? "bg-white text-blue-900 font-bold shadow"
-                            : "hover:bg-gray-800 hover:text-white text-gray-300"
-                        }`}
-                    >
-                      <span className="w-5 h-5">{icon}</span>
-                      <span className="capitalize">{name}</span>
-                    </div>
-                  )}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        ))}
-      </div>
+    <aside className="fixed top-1/2 left-4 transform -translate-y-1/2 z-50 flex flex-col gap-4 font-[Georgia]">
+      {routes[0].pages.map(({ name, path, icon, color }) => (
+        <NavLink
+          key={name}
+          to={`${routes[0].layout}${path}`}
+          className={({ isActive }) =>
+            `w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-transform duration-200 hover:scale-105 group ${
+              isActive ? "ring-4 ring-white" : ""
+            } ${color}`
+          }
+          title={name}
+        >
+          {icon}
+          <span className="sr-only">{name}</span>
+        </NavLink>
+      ))}
     </aside>
   );
 }
 
 Sidebar.propTypes = {
-  brandName: PropTypes.string,
   routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 Sidebar.defaultProps = {
-  brandName: "Auto Lion CRM",
   routes: SidebarRoutes,
 };

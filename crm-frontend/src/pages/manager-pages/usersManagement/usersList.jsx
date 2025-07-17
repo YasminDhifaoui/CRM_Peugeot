@@ -95,21 +95,21 @@ export function UserList() {
           baseClasses +
           (isActive
             ? "bg-red-600 hover:bg-red-700" + activeClasses
-            : "bg-white border-red-600 text-red-600 hover:bg-red-100")
+            : "bg-red-200 border-red-600 text-red-600 hover:bg-red-100")
         );
       case "agentc":
         return (
           baseClasses +
           (isActive
             ? "bg-yellow-600 hover:bg-yellow-700" + activeClasses
-            : "bg-white border-yellow-600 text-yellow-600 hover:bg-yellow-100")
+            : "bg-yellow-200 border-yellow-600 text-yellow-600 hover:bg-yellow-100")
         );
       case "responsablev":
         return (
           baseClasses +
           (isActive
             ? "bg-blue-900 hover:bg-blue-800" + activeClasses
-            : "bg-white border-blue-600 text-blue-600 hover:bg-blue-100")
+            : "bg-blue-200 border-blue-600 text-blue-600 hover:bg-blue-100")
         );
       case "all":
       default:
@@ -117,7 +117,7 @@ export function UserList() {
           baseClasses +
           (isActive
             ? "bg-gray-700 hover:bg-gray-800" + activeClasses
-            : "bg-white border-blue-600 text-blue-600 hover:bg-blue-100")
+            : "bg-gray-300 border-blue-600 text-blue-600 hover:bg-blue-100")
         );
     }
   };
@@ -160,17 +160,16 @@ export function UserList() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-400 text-white font-[Georgia]">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-gray-300 text-white font-[Georgia] relative">
+      {/* Navbar full width */}
+      <Navbar />
+
+      {/* Sidebar (icon buttons on left) */}
       <Sidebar />
 
-      {/* Main content */}
-      <div className="flex flex-col flex-1 xl:ml-72">
-        {/* Navbar */}
-        <Navbar />
-
-        {/* Content */}
-        <main className="flex-1 p-6 bg-gray-500">
+      {/* Content with padding to prevent overlap with sidebar */}
+      <div className="pl-20 pr-4 pt-6 md:pl-24 md:pr-8 mt-16">
+        <main className="flex-1 p-6 bg-gray-300">
           <br />
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Liste des utilisateurs</h2>
@@ -209,7 +208,7 @@ export function UserList() {
           {error && <p className="text-red-500 mb-4">{error}</p>}
 
           {filteredUsers.length > 0 ? (
-            <div className="overflow-x-auto rounded-lg shadow-sm border border-gray-200 bg-white">
+            <div className="overflow-x-auto rounded-lg shadow-sm border border-black bg-gray">
               <table className="min-w-full text-sm text-gray-800">
                 <thead className="bg-blue-900 text-white text-gorgia uppercase tracking-wider">
                   <tr>
@@ -241,10 +240,10 @@ export function UserList() {
                   </tr>
                 </thead>
 
-                <tbody className="bg-gray-300 font-comic divide-y divide-gray-100">
+                <tbody className="bg-gray-500 font-comic divide-y divide-gray-200">
                   {filteredUsers.map(
                     ({ id, photopath, nom, prenom, role, cin, telephone }) => (
-                      <tr key={id} className="hover:bg-gray-50 transition">
+                      <tr key={id} className="hover:bg-gray-400 transition">
                         <td className="px-4 py-3">
                           <img
                             src={
@@ -333,7 +332,7 @@ export function UserList() {
                               className=""
                             >
                               <img
-                                src="/img/icons/edit-row.png"
+                                src="/img/icons/mdf.jpg"
                                 className="w-10 h-10 rounded-full object-cover"
                               />
                             </button>

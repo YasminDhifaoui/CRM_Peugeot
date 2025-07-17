@@ -3,6 +3,11 @@ import Sidebar from "../../../widgets/layout/manager-layout/sidebar";
 import Navbar from "../../../widgets/layout/manager-layout/navbar";
 import { dossiersList } from "../../../services/manager_services/dossiersService";
 import { updateDossier } from "../../../services/manager_services/dossiersService";
+import {
+SaveIcon ,CheckIcon ,DocumentCheckIcon ,
+XMarkIcon ,XCircleIcon ,BanIcon 
+} from "@heroicons/react/24/outline";
+
 
 export function DossiersList() {
   const [dossiers, setDossiers] = useState([]);
@@ -103,17 +108,18 @@ export function DossiersList() {
   ];
 
   return (
-   <div className="flex min-h-screen bg-gray-400 text-white font-[Georgia]">
-      {/* Sidebar */}
+   <div className="min-h-screen bg-gray-300 text-white font-[Georgia] relative">
+      {/* Navbar full width */}
+      <Navbar />
+
+      {/* Sidebar (icon buttons on left) */}
       <Sidebar />
 
-      {/* Main content */}
-      <div className="flex flex-col flex-1 xl:ml-72">
-        {/* Navbar */}
-        <Navbar />
+      {/* Content with padding to prevent overlap with sidebar */}
+      <div className="pl-20 pr-4 pt-6 md:pl-24 md:pr-8 mt-16">
 
         {/* Content */}
-        <main className="flex-1 p-6 bg-gray-500">
+        <main className="flex-1 p-6 bg-gray-300">
         <h2 className="text-xl font-bold mb-4">Liste des Dossiers</h2>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -125,13 +131,13 @@ export function DossiersList() {
             placeholder="Rechercher..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-1 w-60 text-sm"
+            className="border border-gray-400 bg-gray-200 rounded px-3 py-1 w-60 text-sm"
           />
 
            <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className={`border border-gray-300 rounded px-3 py-1 w-52 font-semibold text-white text-sm ${
+            className={`border border-gray-300 bg-gray-700 rounded px-3 py-1 w-52 font-semibold text-white text-sm ${
               statusFilter === "Devis"
                 ? "bg-rose-300"
                 : statusFilter === "Commande"
@@ -161,7 +167,7 @@ export function DossiersList() {
         {filteredDossiers.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white shadow rounded text-sm">
-              <thead className="bg-blue-600 text-white">
+              <thead className="bg-blue-900 text-white">
                 <tr>
                   {[
                     { key: "date_creation", label: "Date de création" },
@@ -195,19 +201,19 @@ export function DossiersList() {
                   let rowColor = "";
                   switch (d.status.toLowerCase()) {
                     case "devis":
-                      rowColor = "bg-rose-300";
+                      rowColor = "bg-rose-400";
                       break;
                     case "commande":
-                      rowColor = "bg-yellow-200";
+                      rowColor = "bg-yellow-500";
                       break;
                     case "facturation":
-                      rowColor = "bg-green-400";
+                      rowColor = "bg-green-500";
                       break;
                     case "livraison":
-                      rowColor = "bg-blue-300";
+                      rowColor = "bg-blue-500";
                       break;
                     case "blockage":
-                      rowColor = "bg-red-500";
+                      rowColor = "bg-red-600";
                       break;
                     default:
                       rowColor = "bg-white";
@@ -234,7 +240,7 @@ export function DossiersList() {
               name="nom_prenom_client"
               value={editedDossier.nom_prenom_client || ""}
               onChange={handleInputChange}
-              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+              className="border border-black-300 bg-gray-200 text-black rounded px-2 py-1 w-full text-sm"
             />
           ) : (
             d.nom_prenom_client
@@ -247,7 +253,9 @@ export function DossiersList() {
               name="telephone"
               value={editedDossier.telephone || ""}
               onChange={handleInputChange}
-              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+              maxLength={18}
+
+              className="border border-black-300 bg-gray-200 text-black rounded px-2 py-1 w-full text-sm"
             />
           ) : (
             d.telephone
@@ -260,7 +268,7 @@ export function DossiersList() {
               name="modeles"
               value={editedDossier.modeles || ""}
               onChange={handleInputChange}
-              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+              className="border border-black-300 bg-gray-200 text-black rounded px-2 py-1 w-full text-sm"
             />
           ) : (
             d.modeles
@@ -273,7 +281,7 @@ export function DossiersList() {
               name="status"
               value={editedDossier.status || ""}
               onChange={handleInputChange}
-              className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+              className="border border-black-300 bg-gray-200 text-black rounded px-2 py-1 w-full text-sm"
             >
               {statuses
                 .filter((s) => s !== "Tous")
@@ -296,7 +304,7 @@ export function DossiersList() {
                 value={editedDossier.commentaire || ""}
                 onChange={handleInputChange}
                 rows={3}
-                className="border border-gray-300 rounded px-2 py-1 w-full text-sm mb-1 resize-none"
+              className="border border-black-300 bg-gray-200 text-black rounded px-2 py-1 w-full text-sm"
               />
               <input
                 type="file"
@@ -323,7 +331,7 @@ export function DossiersList() {
       value={editedDossier.immatriculation || ""}
       onChange={handleInputChange}
         maxLength={18}
-      className="border border-gray-300 rounded px-2 py-1 w-full text-sm"
+              className="border border-black-300 bg-gray-200 text-black rounded px-2 py-1 w-full text-sm"
     />
   ) : (
     d.immatriculation || "—"
@@ -351,9 +359,11 @@ export function DossiersList() {
           ) : (
             <button
               onClick={() => startEditing(d)}
-              className="bg-gray-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded text-xs"
             >
-              Modifier
+            <img
+              src="/img/icons/mdf.jpg"
+              className="w-10 h-10 rounded-full object-cover"
+            />            
             </button>
           )}
         </td>
