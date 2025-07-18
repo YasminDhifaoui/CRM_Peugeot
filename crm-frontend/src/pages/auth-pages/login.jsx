@@ -22,6 +22,12 @@ export function SignIn() {
       if (res.user.role === "manager") {
         navigate("/managerDashboard");
       }
+      else if(res.user.role === "agentC"){
+        navigate("/agentCDashboard");
+      }
+      else if(res.user.role === "responsableV"){
+        navigate("/resVDashboard");
+      }
     } catch (err) {
       setError(err.message || "Une erreur est survenue, veuillez réessayer.");
     }

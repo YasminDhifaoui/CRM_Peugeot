@@ -9,13 +9,13 @@ import PropTypes from "prop-types";
 
 export function StatisticsCard({ color, icon, title, value, footer }) {
   return (
-    <Card className="border border-blue-gray-100 shadow-sm">
+    <Card className="border border-blue-gray-100 shadow-sm relative">
       <CardHeader
         variant="gradient"
         color={color}
         floated={false}
         shadow={false}
-        className="absolute grid h-12 w-12 place-items-center"
+        className="absolute grid h-12 w-12 place-items-center top-4 left-4"
       >
         {icon}
       </CardHeader>
@@ -28,9 +28,7 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
         </Typography>
       </CardBody>
       {footer && (
-        <CardFooter className="border-t border-blue-gray-50 p-4">
-          {footer}
-        </CardFooter>
+        <CardFooter className="border-t border-blue-gray-50 p-4">{footer}</CardFooter>
       )}
     </Card>
   );
@@ -65,11 +63,11 @@ StatisticsCard.propTypes = {
     "red",
   ]),
   icon: PropTypes.node.isRequired,
-  title: PropTypes.node.isRequired,
-  value: PropTypes.node.isRequired,
+  title: PropTypes.node.isRequired,   // or PropTypes.string if only text
+  value: PropTypes.node.isRequired,   // or PropTypes.string if only text
   footer: PropTypes.node,
 };
 
-StatisticsCard.displayName = "/src/widgets/cards/statistics-card.jsx";
+StatisticsCard.displayName = "StatisticsCard";
 
 export default StatisticsCard;

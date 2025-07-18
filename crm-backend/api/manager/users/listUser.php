@@ -1,8 +1,13 @@
 <?php
+session_start();
 require_once '../../../config/headers.php';
-require_once '../../auth/getSessionUser.php';
 require_once '../../../config/db.php';
 
+if (!isset($_SESSION['user'])) {
+    http_response_code(401); 
+    echo json_encode(['error' => 'Not logged in']);
+    exit;
+}
 if ($_SESSION['user']['role'] !== 'manager') {
     http_response_code(403);
     echo json_encode(['error' => 'Access denied: only manager can access']);

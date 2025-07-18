@@ -23,8 +23,8 @@ export default function CurrentDateTime() {
   }); // e.g. "14:35:20"
 
   return (
-    <div className=" bg-gradient-to-r from-blue-700 via-blue-900 to-indigo-900  shadow-lg p-3 text-center select-none bg-white rounded-xl shadow p-6 w-full max-w-md">
-      <div className="text-xs text-blue-300 font-semibold tracking-wide">
+    <div className=" bg-gradient-to-r from-blue-800 via-blue-900 to-indigo-900  shadow-lg p-3 text-center select-none bg-white rounded-xl shadow p-6 w-full max-w-md">
+      <div className="text-xs text-blue-100 font-semibold tracking-wide">
         {dateStr}
       </div>
       <div className="text-white text-xl font-mono mt-1">{timeStr}</div>

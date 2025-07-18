@@ -6,14 +6,23 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import ProtectedRoute from "./api/ProtectedRoute";
+import TestSession from "./pages/TestSession";
+
+
 import Login from "./pages/auth-pages/login";
 import Logout from "./pages/auth-pages/logout";
+
 import ManagerDashboard from "./pages/manager-pages/managerDashboard";
-import ProtectedRoute from "./api/ProtectedRoute";
 import { UserList } from "./pages/manager-pages/usersManagement/usersList";
 import { AddUser } from "./pages/manager-pages/usersManagement/addUser";
 import {DossiersList} from "./pages/manager-pages/dossiersManagement/listDossier";
-import TestSession from "./pages/TestSession";
+
+import AgentCDashboard from "./pages/agentC-pages/agentCDashboard";
+import ListDossierAgent from "./pages/agentC-pages/dossiers-agentManagement/listDossier-agent";
+
+
+
 function App() {
   return (
     <Router>
@@ -43,6 +52,20 @@ function App() {
         <Route path="/managerDashboard/usersList" element={<UserList />} />
         <Route path="/managerDashboard/addUser" element={<AddUser />} />
         <Route path="/managerDashboard/dossiersList" element={<DossiersList />} />
+
+        {/* AgentC routes */}
+        <Route
+          path="/agentCDashboard"
+          element={
+            <ProtectedRoute>
+              {" "}
+              {/*it means the user cant return to previous page after logout*/}
+              <AgentCDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/agentCDashboard/logout" element={<Logout />} />
+        <Route path="/agentCDashboard/ListDossierAgent" element={<ListDossierAgent />} />
 
       </Routes>
     </Router>

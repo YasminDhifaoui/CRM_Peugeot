@@ -1,6 +1,6 @@
 <?php
+session_start();
 require_once '../../../config/headers.php';
-require_once '../../auth/getSessionUser.php';
 require_once '../../../config/db.php';
 
 if ($_SESSION['user']['role'] !== 'manager') {

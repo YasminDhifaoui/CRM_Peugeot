@@ -1,6 +1,5 @@
 <?php
 require_once '../../../config/headers.php';
-require_once '../../auth/getSessionUser.php';
 require_once '../../../config/db.php';
 
 // ✅ Check manager access

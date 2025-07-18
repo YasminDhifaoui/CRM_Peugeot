@@ -6,35 +6,11 @@ import CircularProgress from "../../widgets/statics/CircularProgress";
 import Sidebar from "../../widgets/layout/manager-layout/sidebar";
 import StaticBarChart from "../../widgets/statics/StaticBarChart";
 import VerticalBarChart from "../../widgets/statics/VerticalBarChart";
-import AgentProgressRadialChart from "../../widgets/statics/CarsProgressRadialChart";
+import CarsProgressRadialChart from "../../widgets/statics/CarsProgressRadialChart";
 import CurrentDateTime from "../../widgets/layout/CurrentDateTime";
+import StatisticsCard from "../../widgets/statics/statistics-card";
 
-// Statistic Card Component
-const StatisticsCard = ({ icon, title, value, footer }) => (
-  <Card className="p-4 shadow bg-gray-900 text-white font-[Georgia]">
-    <div className="flex items-center gap-4">
-      <div className="bg-blue-900 rounded-full p-2 text-white">{icon}</div>
-      <div>
-        <Typography variant="h6" className="text-blue-800">
-          {title}
-        </Typography>
-        <Typography className="text-lg font-semibold">{value}</Typography>
-        <div className="text-sm mt-1">{footer}</div>
-      </div>
-    </div>
-  </Card>
-);
 
-// Statistic Chart Component
-const StatisticsChart = ({ title, description, footer }) => (
-  <Card className="p-4 shadow bg-gray-900 text-white font-[Georgia]">
-    <Typography variant="h6" className="text-blue-400">
-      {title}
-    </Typography>
-    <Typography className="text-xl font-semibold">{description}</Typography>
-    <div className="mt-2 text-sm text-blue-200">{footer}</div>
-  </Card>
-);
 
 // Dummy data
 const statisticsCardsData = [
@@ -64,23 +40,6 @@ const statisticsCardsData = [
   },
 ];
 
-const statisticsChartsData = [
-  {
-    title: "Ventes ",
-    description: "50",
-    footer: "Mis à jour il y a 1 heure",
-  },
-  {
-    title: "Par Mois",
-    description: "42",
-    footer: "Mis à jour aujourd'hui",
-  },
-  {
-    title: "Par Année",
-    description: "65",
-    footer: "Mis à jour il y a 5 min",
-  },
-];
 
 
 export function Home() {
@@ -114,7 +73,10 @@ export function Home() {
               />
             ))}
           </div>
-                <AgentProgressRadialChart />
+          <div className="grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-2 mb-12 mt-8">
+                <CarsProgressRadialChart />          
+                <VerticalBarChart />
+          </div>
 
         </main>
 
@@ -122,11 +84,10 @@ export function Home() {
         <aside className="w-64 ml-8">
           <CurrentDateTime />
           <div className="mt-6">
-            <CircularProgress percent={10} />
+            <CircularProgress percent={40} />
           </div>
 
           <StaticBarChart />
-          <VerticalBarChart />
 
 
         </aside>

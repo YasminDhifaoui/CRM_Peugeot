@@ -9,23 +9,23 @@ import {
 
 const data = [
   {
-    name: "Agent A",
+    name: "Citroen",
     progress: 80,
     fill: "#16a34a", // Green
   },
   {
-    name: "Agent B",
+    name: "Peugoet",
     progress: 55,
     fill: "#eab308", // Yellow
   },
   {
-    name: "Agent C",
+    name: "Opel",
     progress: 30,
     fill: "#dc2626", // Red
   },
 ];
 
-export default function AgentProgressRadialChart() {
+export default function CarsProgressRadialChart() {
   return (
     <div className="flex justify-center items-center p-6">
       <RadialBarChart

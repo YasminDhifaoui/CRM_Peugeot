@@ -8,8 +8,8 @@ const getColor = (percent) => {
 };
 
 const CircularProgress = ({ percent = 65 }) => {
-  const radius = 45;
-  const stroke = 10;
+  const radius = 80;
+  const stroke = 20;
   const normalizedRadius = radius - stroke / 2;
   const circumference = 2 * Math.PI * normalizedRadius;
   const strokeDashoffset =
@@ -43,7 +43,7 @@ const CircularProgress = ({ percent = 65 }) => {
           y="50%"
           dy=".3em"
           textAnchor="middle"
-          className="text-sm font-bold fill-gray-700"
+          className="text-lg font-bold fill-black-700"
         >
           {percent}%
         </text>
