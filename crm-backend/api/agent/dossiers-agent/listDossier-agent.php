@@ -15,7 +15,7 @@ try {
     $whereClauses = [];
 
     // Always filter by logged-in agent's user_id
-    $whereClauses[] = "d.user_id = :user_id";
+    $whereClauses[] = "d.user_id = :user_id AND d.archived = false";
     $params[':user_id'] = $_SESSION['user']['id'];
 
     // Filter by status if provided and not 'Tous'

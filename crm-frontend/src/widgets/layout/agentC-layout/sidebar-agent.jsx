@@ -37,7 +37,7 @@ const SidebarRoutes = [
       },
        {
         name: "Archive",
-        path: "/archive",
+        path: "/ArchiveAgent",
         icon: < ArchiveBoxIcon className="h-6 w-6 text-white" />,
         color: "bg-yellow-700",
       },

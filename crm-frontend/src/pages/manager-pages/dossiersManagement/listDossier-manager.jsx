@@ -4,19 +4,19 @@ import { BASE_URL, PICTURE_URL } from "../../../api/base";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import NavbarAgent from "../../../widgets/layout/agentC-layout/navbar-agent";
-import SidebarAgent from "../../../widgets/layout/agentC-layout/sidebar-agent";
+import Navbar from "../../../widgets/layout/manager-layout/navbar";
+import Sidebar from "../../../widgets/layout/manager-layout/sidebar";
+import {
+  dossiersListManager,
+  listCarsManager,
+  addDossiersManager,
+  archiveDossiersManager,
+} from "../../../services/manager_services/dossiersService";
 import {
   customSingleValue,
   customOption,
 } from "../../../widgets/components/customSingleValue";
 
-import {
-  dossiersListAgent,
-  addDossierAgent,
-  archiveDossier,
-  listCars,
-} from "../../../services/agent-services/dossiersAgentServices";
 import {
   PlusIcon,
   XMarkIcon,
@@ -33,7 +33,7 @@ const statusOptions = [
   "Blockage",
 ];
 
-const DossiersPage = () => {
+const DossiersPageManager = () => {
   const [dossiers, setDossiers] = useState([]);
   const [cars, setCars] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -51,12 +51,12 @@ const DossiersPage = () => {
 
   useEffect(() => {
     loadDossiers();
-    loadCars();
+    loadCars(); // load cars on component mount
   }, []);
 
   const loadDossiers = async () => {
     try {
-      const result = await dossiersListAgent();
+      const result = await dossiersListManager();
       if (result.message) {
         setDossiers(result.message);
       }
@@ -66,10 +66,10 @@ const DossiersPage = () => {
   };
   const loadCars = async () => {
     try {
-      const result = await listCars();
-      console.log("API result:", result);
+      const result = await listCarsManager();
+      console.log("API result:", result); // For debugging
       if (result.success && Array.isArray(result.data)) {
-        setCars(result.data);
+        setCars(result.data); // ✅ Use result.data
       }
     } catch (error) {
       console.error("Failed to load cars:", error);
@@ -113,7 +113,7 @@ const DossiersPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await addDossierAgent(formData);
+      const res = await addDossiersManager(formData);
       console.log("Dossier added:", res);
 
       if (res.message) {
@@ -166,11 +166,12 @@ const DossiersPage = () => {
   return (
     <div className="min-h-screen bg-gray-300 text-white font-[Georgia] relative flex flex-col mt-20">
       {/* Navbar full width */}
-      <NavbarAgent />
+      <Navbar />
       <ToastContainer />
+
       <div className="flex flex-1 pt-6 px-4 md:px-8">
         {/* Sidebar */}
-        <SidebarAgent />
+        <Sidebar />
 
         {/* Left: Stats cards + charts */}
         <main className="flex-1 pl-6 md:pl-12">
@@ -250,7 +251,7 @@ const DossiersPage = () => {
                     <th className="border p-2">Modèles</th>
                     <th className="border p-2">Immatriculation</th>
                     <th className="border p-2">Status</th>
-                    <th className="border p-2">Commentaire</th>
+                    <th className="border p-2">Agent commercial</th>
                     <th className="border p-2">Date de mise à jours</th>
                   </tr>
                 </thead>
@@ -282,8 +283,9 @@ const DossiersPage = () => {
                           {d.status}
                         </span>
                       </td>
-
-                      <td className="border p-2 text-black">{d.commentaire}</td>
+                      <td className="border p-2 text-black">
+                        {d.agent_full_name}
+                      </td>
                       <td className="border p-2 text-black">
                         {formatDateTime(d.updated_at)}
                       </td>
@@ -295,7 +297,7 @@ const DossiersPage = () => {
                           <div
                             onClick={async () => {
                               try {
-                                const response = await archiveDossier(d.id);
+                                const response = await archiveDossiersManager(d.id);
                                 if (response && response.success) {
                                   toast.success("archived successfully");
                                   loadDossiers();
@@ -442,4 +444,4 @@ const DossiersPage = () => {
   );
 };
 
-export default DossiersPage;
+export default DossiersPageManager;

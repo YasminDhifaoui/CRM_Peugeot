@@ -19,7 +19,7 @@ function Navbar() {
     };
 
     fetchUser();
-  });
+  },[]);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 w-full bg-black border-b border-gray-700 px-6 py-4 flex justify-between items-center font-[Georgia] shadow-md">
@@ -62,7 +62,7 @@ function Navbar() {
             <span className="hidden sm:inline-block text-sm font-semibold text-white">
               {user ? (
                 <h1>
-                  {user.prenom} {user.nom}
+                  {user.prenom} {user.nom} ({user.role})
                 </h1>
               ) : (
                 <p>Loading user info...</p>

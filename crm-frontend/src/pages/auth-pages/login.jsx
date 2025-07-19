@@ -21,11 +21,9 @@ export function SignIn() {
       localStorage.setItem("user", JSON.stringify(res.user));
       if (res.user.role === "manager") {
         navigate("/managerDashboard");
-      }
-      else if(res.user.role === "agentC"){
+      } else if (res.user.role === "agentC") {
         navigate("/agentCDashboard");
-      }
-      else if(res.user.role === "responsableV"){
+      } else if (res.user.role === "responsableV") {
         navigate("/resVDashboard");
       }
     } catch (err) {
@@ -92,7 +90,7 @@ export function SignIn() {
                 placeholder="********"
                 value={cin}
                 onChange={(e) => setCin(e.target.value)}
-                className="flex-grow bg-gray-300 text-black !border-t-gray-200 focus:!border-t-blue-700"
+                className="flex-grow bg-gray-300 text-gray-200 !border-t-gray-200 focus:!border-t-blue-700"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -114,7 +112,7 @@ export function SignIn() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="flex-grow bg-gray-300 text-black !border-t-gray-200 focus:!border-t-blue-700"
+                className="flex-grow bg-gray-300 text-gray-200 !border-t-gray-200 focus:!border-t-blue-700"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}

@@ -62,7 +62,7 @@ function NavbarAgent() {
             <span className="hidden sm:inline-block text-sm font-semibold text-white">
               {user ? (
                 <h1>
-                  {user.prenom} {user.nom}
+                  {user.prenom} {user.nom} ({user.role})
                 </h1>
               ) : (
                 <p>Loading user info...</p>
